@@ -1,9 +1,9 @@
 {
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
-  "name": "io.github.zane-labs/unraster",
+  "name": "ai.unraster/convert",
   "title": "Unraster",
   "description": "Turn slide images, charts and screenshots into editable PowerPoint (PPTX) or SVG files.",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "websiteUrl": "https://unraster.ai/docs/agents",
   "repository": {
     "url": "https://github.com/zane-labs/unraster-mcp",

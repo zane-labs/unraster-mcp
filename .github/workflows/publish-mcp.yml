@@ -37,8 +37,12 @@ jobs:
           tar xzf "$archive" mcp-publisher
           rm -f "$archive" "$archive.sigstore.json"
 
+      # ai.unraster/* is verified by the unraster.ai DNS TXT record, so GitHub OIDC
+      # cannot publish it. Needs the repo secret MCP_REGISTRY_PRIVATE_KEY (ed25519 hex).
       - name: Authenticate to MCP Registry
-        run: ./mcp-publisher login github-oidc
+        env:
+          MCP_REGISTRY_PRIVATE_KEY: ${{ secrets.MCP_REGISTRY_PRIVATE_KEY }}
+        run: ./mcp-publisher login dns --domain unraster.ai --private-key "$MCP_REGISTRY_PRIVATE_KEY"
 
       - name: Publish server to MCP Registry
         run: ./mcp-publisher publish
