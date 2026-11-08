@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "unraster": {
+      "url": "https://unraster.ai/mcp",
+      "headers": {
+        "Authorization": "Bearer ${env:UNRASTER_API_KEY}"
+      }
+    }
+  }
+}

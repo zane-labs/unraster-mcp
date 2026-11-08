@@ -1,0 +1,5 @@
+# Add to ~/.codex/config.toml
+# Codex sends the value of UNRASTER_API_KEY as the Bearer token.
+[mcp_servers.unraster]
+url = "https://unraster.ai/mcp"
+bearer_token_env_var = "UNRASTER_API_KEY"
