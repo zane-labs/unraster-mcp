@@ -105,6 +105,24 @@ bash scripts/batch.sh pptx results.zip slides/*.png
 
 Documentation: https://unraster.ai/docs/api#batches
 
+## Use the REST API directly
+
+No MCP client needed. Two minimal examples (about 55 lines each, no dependencies) convert one image to an editable `.pptx`:
+
+```bash
+export UNRASTER_API_KEY="your-api-key"
+python3 examples/convert.py slide.png   # Python 3, standard library only
+node examples/convert.mjs slide.png     # Node 18+, built-in fetch
+```
+
+- `POST https://unraster.ai/v1/conversions` with `Authorization: Bearer <key>`, an `Idempotency-Key` header, and a multipart body (`file`, `outputs=pptx`). It returns a task `id` (HTTP 202, or 200 when you replay the same key).
+- Poll `GET /v1/conversions/{id}` while `status` is `queued` or `processing`. On `completed` (or `needs_review`), download the output whose `status` is `ready` from its `url`.
+- PowerPoint costs 2 credits and Advanced SVG 1 credit (`outputs=svg`). Only delivered files are charged. A rejected request (HTTP 4xx) or an undelivered file is not charged. On a timeout, a server error or a failed download the outcome is unknown, so the scripts print the task ID and tell you to re-run with the same `UNRASTER_IDEMPOTENCY_KEY`, which resumes the same task without a second charge.
+- Set `UNRASTER_API` (the same variable as `scripts/batch.sh`) to use another API origin; it must be https, except for localhost.
+- The result is not an exact copy of the pixels: fine lettering can stay as shapes, and charts come back as shapes rather than native PowerPoint charts. Check text and details before you use the file.
+
+Full reference: https://unraster.ai/docs/api
+
 ## Limits
 
 - PNG, JPEG and WebP only.
